@@ -11,7 +11,7 @@
 
 # Description 
 
-online-book-store-bnpf is a spring boot application to simulate the online book shoping process , the project is depending on in-memory h2 database which automatically initilize during the application startup with new schema and data , you can find the database schema and data in schema.sql and data.sql.
+online-book-store-bnpf is a spring boot application to simulate the online book shoping process , the project is depending on in-memory h2 database which automatically initilize during the application startup with new schema and data , you can find the database schema and data in schema.sql and data.sql.<br>
 PS: react ui part and authentication still in progress due to time limitation.
 
 # Steps to Run 
