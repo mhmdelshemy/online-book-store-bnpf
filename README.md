@@ -25,5 +25,5 @@ PS: react ui part and authentication still in progress due to time limitation.
   2- ````AddToCart```` create new cart associated to the user and add cart item for the desired book<br>
   3- ````ModifyCart```` modify the cart item quantity,and create new cart item if the cart is exist for the associated user<br>
   4- ````ListBooks```` list all books available<br>
-  5- ````Checkout```` checkout the cart and deduct the quanity from each book's stock<br>
+  5- ````Checkout```` checkout the cart and deduct the quantity from each book's stock<br>
   6- ````DeleteCart```` delete cart with associated cart items<br>
