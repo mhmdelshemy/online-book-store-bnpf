@@ -1,6 +1,6 @@
 package com.bookstore.service;
 
-import com.bookstore.TestUtils;
+import com.bookstore.util.TestUtils;
 import com.bookstore.exception.OutOfStockException;
 import com.bookstore.model.Cart;
 import com.bookstore.model.CartItem;
@@ -10,8 +10,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -20,6 +22,8 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 public class CartServiceTest {
 
     @MockBean
@@ -37,14 +41,14 @@ public class CartServiceTest {
     @Autowired
     private CartService cartService;
     Long customerId = 1L;
-    Long bookId = 1L;
     int quantity = 5;
 
     @Test
     public void testAddBookToCart_whenStockNotSufficient(){
 
         when(bookService.findById(ArgumentMatchers.anyLong())).thenReturn(TestUtils.generateBookWithStock(3));
-        assertThatThrownBy(() -> cartService.addBookToCart(customerId, bookId, quantity)).isInstanceOf(OutOfStockException.class);
+        assertThatThrownBy(() -> cartService.addBookToCart(TestUtils.generateCartItemRequest(1L,1L,5)))
+                .isInstanceOf(OutOfStockException.class);
 
     }
 
@@ -58,7 +62,7 @@ public class CartServiceTest {
         when(customerService.findById(ArgumentMatchers.anyLong())).thenReturn(customer);
         when(cartRepository.findByCustomerId(ArgumentMatchers.anyLong())).thenReturn(null);
 
-        cartService.addBookToCart(customerId, bookId, quantity);
+        cartService.addBookToCart(TestUtils.generateCartItemRequest(1L,1L,5));
 
         verify(cartRepository, times(1)).save(any(Cart.class));
         verify(cartItemService, times(1)).addCartItem(any(CartItem.class));
@@ -81,7 +85,7 @@ public class CartServiceTest {
         when(cartRepository.findByCustomerId(ArgumentMatchers.anyLong())).thenReturn(cart);
         when(cartItemService.findByCartAndBook(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(cartItem);
 
-        cartService.addBookToCart(customerId, bookId, quantity);
+        cartService.addBookToCart(TestUtils.generateCartItemRequest(1L,1L,5));
 
         verify(cartItemService, times(1)).addCartItem(cartItem);
         verify(cartItemService, times(1)).findByCartAndBook(cart, book);
@@ -103,7 +107,7 @@ public class CartServiceTest {
         when(customerService.findById(ArgumentMatchers.anyLong())).thenReturn(customer);
         when(cartRepository.findByCustomerId(ArgumentMatchers.anyLong())).thenReturn(cart);
         when(cartItemService.findByCartAndBook(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(null);
-        cartService.addBookToCart(customerId, bookId, quantity);
+        cartService.addBookToCart(TestUtils.generateCartItemRequest(1L,1L,5));
 
         verify(cartItemService, times(1)).addCartItem(any(CartItem.class));
         verify(cartRepository, times(1)).save(cart);

@@ -1,4 +1,4 @@
-package com.bookstore;
+package com.bookstore.util;
 
 import com.bookstore.dto.CartItemRequest;
 import com.bookstore.model.Book;

@@ -1,23 +1,17 @@
 package com.bookstore.service;
 
-import com.bookstore.TestUtils;
+import com.bookstore.util.TestUtils;
 import com.bookstore.dto.CartItemRequest;
 import com.bookstore.exception.CartNotFoundException;
 import com.bookstore.exception.InvalidQuantityException;
-import com.bookstore.exception.OutOfStockException;
-import com.bookstore.model.Book;
-import com.bookstore.model.Cart;
-import com.bookstore.model.CartItem;
-import com.bookstore.model.Customer;
 import com.bookstore.repo.CartRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -26,6 +20,8 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 public class CartItemServiceTest {
 
     @MockBean

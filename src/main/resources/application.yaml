@@ -19,4 +19,13 @@ spring:
 logging:
   level:
     com.bookstore: DEBUG
-    org.springframework.security: DEBUG
+bookstore:
+  api:
+    cartMapping: api/cart/
+    bookMapping: api/book/
+    addCart: addCart
+    modifyCart: modifyCart
+    deleteCart: deleteCart
+    listCart: listCart
+    checkout: checkout
+    listBooks: listBooks

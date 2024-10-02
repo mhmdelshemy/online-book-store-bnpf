@@ -50,12 +50,26 @@ public class CartItemServiceImpl implements CartItemService {
         cartItemRepository.flush();
     }
 
+
+    /**
+     * Modify a book quantity in the cart for a given customer.
+     * or add a new cartitem if the cart already exist
+     *
+     * @param cartItemRequest ->
+     *  customerId the ID of the customer
+     *  bookId the ID of the book to add
+     *  quantity the number of books to add
+     */
     @Override
     @Transactional
     public void modifyCartItem(CartItemRequest cartItemRequest){
 
         int quantity = cartItemRequest.getQuantity();
+        log.debug("Quantity Requested  : {}", quantity);
+
         var cart = cartRepository.findByCustomerId(cartItemRequest.getCustomerId());
+        log.debug("Cart fetched : {}", cart);
+
         if (cart == null) {
             throw new CartNotFoundException();
         }
@@ -65,6 +79,7 @@ public class CartItemServiceImpl implements CartItemService {
                 .filter(item -> item.getBook().getId().equals(book.getId()))
                 .findFirst()
                 .orElse(null);
+        log.debug("CartItem : {}", cartItem);
 
         if ((quantity <= 0 && cartItem == null) || quantity < 0)
             throw new InvalidQuantityException();
