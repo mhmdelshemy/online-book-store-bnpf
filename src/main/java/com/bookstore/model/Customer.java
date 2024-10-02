@@ -3,7 +3,6 @@ package com.bookstore.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.Instant;
 
@@ -23,7 +22,7 @@ public class Customer {
     @CreatedDate
     private Instant created;
 
-    public void setPassword(String password) {
-        this.password = new BCryptPasswordEncoder().encode(password);
-    }
+//    public void setPassword(String password) {
+//        this.password = new BCryptPasswordEncoder().encode(password);
+//    }
 }

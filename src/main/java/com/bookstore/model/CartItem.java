@@ -21,8 +21,14 @@ public class CartItem {
 
     private int quantity;
 
-    public CartItem(Book book, int quantity) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id")
+    @ToString.Exclude
+    private Cart cart;
+
+    public CartItem(Book book, int quantity,Cart cart) {
         this.book = book;
         this.quantity = quantity;
+        this.cart = cart;
     }
 }

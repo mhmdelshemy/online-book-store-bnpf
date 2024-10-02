@@ -1,8 +1,14 @@
 package com.bookstore.dto;
 
-public record CartItemRequest (
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-     Long customerId,
-     Long bookId,
-     int quantity){}
+@Data
+@AllArgsConstructor
+public class CartItemRequest{
+
+     private Long customerId;
+     private Long bookId;
+     private int quantity;
+}
 

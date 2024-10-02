@@ -1,4 +1,6 @@
 INSERT INTO customer (first_name,sur_name,user_name,password) VALUES ('john','doe', 'john@email.com','1234');
+INSERT INTO customer (first_name,sur_name,user_name,password) VALUES ('david','milles', 'david@email.com','1234');
+
 INSERT INTO book (title, author,isbn, price, stock)
 VALUES
 ('Spring Action', 'Jack','123456' ,10.99, 50),

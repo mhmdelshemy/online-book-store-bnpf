@@ -2,12 +2,15 @@ package com.bookstore.dto;
 
 import com.bookstore.model.CartItem;
 import com.bookstore.model.Customer;
+import lombok.Data;
 
 import java.util.List;
 
-public record CartDTO (
+@Data
+public class CartDTO {
 
-     Long id,
-     Customer customer,
-     List<CartItem> cartItems){}
+    private Long id;
+    private Customer customer;
+    private List<CartItemDTO> cartItems;
+}
 

@@ -1,6 +1,5 @@
 package com.bookstore.api;
 
-import com.bookstore.config.JWTHandler;
 import com.bookstore.dto.CustomerDTO;
 import com.bookstore.dto.LoginRequest;
 import com.bookstore.model.Customer;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CustomerApi {
 
     private final CustomerService customerService;
-    private final JWTHandler jwtHandler;
+   // private final JWTHandler jwtHandler;
 
 
     @PostMapping("/register")
@@ -32,7 +31,7 @@ public class CustomerApi {
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         Customer customer = customerService.authenticateUser(loginRequest.username(), loginRequest.password());
 
-        String token = jwtHandler.generateToken(loginRequest.username());
-        return ResponseEntity.ok(token);
+       // String token = jwtHandler.generateToken(loginRequest.username());
+        return ResponseEntity.ok("token");
     }
 }

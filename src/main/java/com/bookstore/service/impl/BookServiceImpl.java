@@ -15,21 +15,17 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class BookServiceImpl implements BookService {
-
-
     private final BookRepository bookRepository;
     @Override
     public Book addBook(Book book) {
         log.debug("Saving book : {}", book);
         return bookRepository.save(book);
     }
-
     @Override
     public Book findById(Long id) {
         log.debug("Getting Book by id : {}",id);
         return bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
     }
-
     @Override
     public List<Book> listBooks() {
         List<Book> books =bookRepository.findAll();

@@ -9,4 +9,5 @@ public interface CartService {
     CartDTO findByCustomerId(Long customerId);
 
     void removeCart(Long cartId);
+    double checkout(Cart cart);
 }

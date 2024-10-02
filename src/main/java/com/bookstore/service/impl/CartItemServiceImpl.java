@@ -1,8 +1,11 @@
 package com.bookstore.service.impl;
 
 import com.bookstore.dto.CartItemRequest;
+import com.bookstore.exception.CartNotFoundException;
 import com.bookstore.exception.InvalidQuantityException;
+import com.bookstore.exception.OutOfStockException;
 import com.bookstore.model.Book;
+import com.bookstore.model.Cart;
 import com.bookstore.model.CartItem;
 import com.bookstore.repo.CartItemRepository;
 import com.bookstore.repo.CartRepository;
@@ -13,6 +16,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +39,10 @@ public class CartItemServiceImpl implements CartItemService {
     public CartItem findByBook(Book book) {
         return cartItemRepository.findByBook(book);
     }
+    @Override
+    public CartItem findByCartAndBook(Cart cart, Book book) {
+        return cartItemRepository.findByCartAndBook(cart,book);
+    }
 
     @Override
     public void removeCartItem(CartItem cartItem) {
@@ -45,23 +54,25 @@ public class CartItemServiceImpl implements CartItemService {
     @Transactional
     public void modifyCartItem(CartItemRequest cartItemRequest){
 
-        int quantity = cartItemRequest.quantity();
-        if(quantity < 0){
-            //TODO
-            throw new InvalidQuantityException();
+        int quantity = cartItemRequest.getQuantity();
+        var cart = cartRepository.findByCustomerId(cartItemRequest.getCustomerId());
+        if (cart == null) {
+            throw new CartNotFoundException();
         }
-        var book = bookService.findById(cartItemRequest.bookId());
+
+        var book = bookService.findById(cartItemRequest.getBookId());
+        var cartItem = cart.getCartItems().stream()
+                .filter(item -> item.getBook().getId().equals(book.getId()))
+                .findFirst()
+                .orElse(null);
+
+        if ((quantity <= 0 && cartItem == null) || quantity < 0)
+            throw new InvalidQuantityException();
 
         if (quantity > book.getStock()) {
-            throw new RuntimeException("no av stock");
+            throw new OutOfStockException();
         }
 
-        var cart = cartRepository.findByCustomerId(cartItemRequest.customerId());
-        if (cart == null) {
-            throw new RuntimeException("Cart not found for logged user, create cart first");
-        }
-
-        var cartItem = findByBook(book);
         if (cartItem != null) {
             if (quantity == 0){
                 removeCartItem(cartItem);
@@ -74,7 +85,7 @@ public class CartItemServiceImpl implements CartItemService {
                 cartItem.setQuantity(quantity);
             }
         }else {
-            cartItem = new CartItem(book,quantity);
+            cartItem = new CartItem(book,quantity,cart);
         }
         addCartItem(cartItem);
     }

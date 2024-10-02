@@ -6,6 +6,7 @@ import lombok.Data;
 import jakarta.persistence.Id;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,5 +23,5 @@ public class Cart {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
     @JoinColumn(name = "cart_id")
-    private List<CartItem> cartItems;
+    private List<CartItem> cartItems=new ArrayList<>();
 }
