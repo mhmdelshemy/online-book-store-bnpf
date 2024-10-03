@@ -1,12 +1,15 @@
 package com.bookstore.api;
 
+import com.bookstore.config.BookstoreConfig;
 import com.bookstore.dto.CartDTO;
 import com.bookstore.dto.CartItemRequest;
 import com.bookstore.model.Cart;
 import com.bookstore.repo.CartRepository;
+import com.bookstore.repo.CustomerRepository;
 import com.bookstore.service.CartItemService;
 import com.bookstore.service.CartService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
