@@ -16,9 +16,13 @@ spring:
       ddl-auto: none
   main:
     allow-bean-definition-overriding: true
+
 logging:
   level:
-    com.bookstore: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web.server: DEBUG
+    reactor.ipc.netty.channel: DEBUG
+
 bookstore:
   api:
     cartMapping: api/cart/
@@ -29,3 +33,6 @@ bookstore:
     listCart: listCart
     checkout: checkout
     listBooks: listBooks
+jwt:
+  token-expiration-seconds: 1800
+  secret-key: thisisasecretkeybutmoremorewaylongersecretkey

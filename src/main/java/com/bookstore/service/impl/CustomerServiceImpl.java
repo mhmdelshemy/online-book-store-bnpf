@@ -8,6 +8,7 @@ import com.bookstore.repo.CustomerRepository;
 import com.bookstore.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CustomerServiceImpl implements CustomerService {
 
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final CustomerRepository customerRepository;
     @Override
     public Customer registerCustomer(CustomerDTO customerDTO) {
@@ -26,8 +27,8 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setFirstName(customerDTO.firstName());
         customer.setSurName(customerDTO.surName());
         customer.setUserName(customerDTO.userName());
-//        String hashedPassword = passwordEncoder.encode(customerDTO.password());
-//        customer.setPassword(hashedPassword);
+        String hashedPassword = passwordEncoder.encode(customerDTO.password());
+        customer.setPassword(hashedPassword);
         return customerRepository.save(customer);
     }
 
@@ -48,9 +49,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer authenticateUser(String username, String password) {
         Customer user = findByUsername(username);
-//        if (!passwordEncoder.matches(password, user.getPassword())) {
-//            throw new RuntimeException("Invalid credentials");
-//        }
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
         return user;
     }
 }
