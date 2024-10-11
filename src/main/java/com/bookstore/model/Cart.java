@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.persistence.Id;
 import lombok.ToString;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +20,9 @@ public class Cart {
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", nullable = false, unique = true)
-    private Customer customer;
+    private Mono<Customer> customer;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER,orphanRemoval = true)
     @JoinColumn(name = "cart_id")
     private List<CartItem> cartItems=new ArrayList<>();
 }

@@ -59,7 +59,7 @@ public class CartServiceTest {
         customer.setId(customerId);
 
         when(bookService.findById(ArgumentMatchers.anyLong())).thenReturn(TestUtils.generateBookWithStock(10));
-        when(customerService.findById(ArgumentMatchers.anyLong())).thenReturn(customer);
+        when(customerService.findById(ArgumentMatchers.anyLong()).block()).thenReturn(customer);
         when(cartRepository.findByCustomerId(ArgumentMatchers.anyLong())).thenReturn(null);
 
         cartService.addBookToCart(TestUtils.generateCartItemRequest(1L,1L,5));
@@ -81,7 +81,7 @@ public class CartServiceTest {
         CartItem cartItem = new CartItem(book, quantity, cart);
 
         when(bookService.findById(ArgumentMatchers.anyLong())).thenReturn(book);
-        when(customerService.findById(ArgumentMatchers.anyLong())).thenReturn(customer);
+        when(customerService.findById(ArgumentMatchers.anyLong()).block()).thenReturn(customer);
         when(cartRepository.findByCustomerId(ArgumentMatchers.anyLong())).thenReturn(cart);
         when(cartItemService.findByCartAndBook(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(cartItem);
 
@@ -104,7 +104,7 @@ public class CartServiceTest {
         cart.setCustomer(customer);
 
         when(bookService.findById(ArgumentMatchers.anyLong())).thenReturn(book);
-        when(customerService.findById(ArgumentMatchers.anyLong())).thenReturn(customer);
+        when(customerService.findById(ArgumentMatchers.anyLong()).block()).thenReturn(customer);
         when(cartRepository.findByCustomerId(ArgumentMatchers.anyLong())).thenReturn(cart);
         when(cartItemService.findByCartAndBook(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(null);
         cartService.addBookToCart(TestUtils.generateCartItemRequest(1L,1L,5));
